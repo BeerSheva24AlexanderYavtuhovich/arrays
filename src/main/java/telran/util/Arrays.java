@@ -25,11 +25,9 @@ public class Arrays {
 
     public static int[] remove(int[] numbers, int index) {
         int[] res = numbers;
-        if (index < numbers.length && index > -1) {
-            res = new int[numbers.length - 1];
-            System.arraycopy(numbers, 0, res, 0, index);
-            System.arraycopy(numbers, index + 1, res, index, res.length - index);
-        }
+        res = new int[numbers.length - 1];
+        System.arraycopy(numbers, 0, res, 0, index);
+        System.arraycopy(numbers, index + 1, res, index, res.length - index);
         return res;
     }
 

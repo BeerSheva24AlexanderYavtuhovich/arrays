@@ -24,24 +24,22 @@ public class ArraysTest {
     @Test
     void addTest() {
         int newNumber = 100;
-        int [] expected  = { 10, 7, 12, -4, 13, 3, 14, 100 };
+        int[] expected = { 10, 7, 12, -4, 13, 3, 14, 100 };
         assertArrayEquals(expected, add(numbers, newNumber));
     }
-
 
     @Test
     void insertTest() {
         int newNumber = 100;
         int newIndex = 4;
-        int [] expected  = { 10, 7, 12, -4, 100, 13, 3, 14 };
+        int[] expected = { 10, 7, 12, -4, 100, 13, 3, 14 };
         assertArrayEquals(expected, insert(numbers, newIndex, newNumber));
     }
-
 
     @Test
     void removeTest() {
         int removeIndex = 4;
-        int [] expected  = { 10, 7, 12, -4, 3, 14 };
+        int[] expected = { 10, 7, 12, -4, 3, 14 };
         assertArrayEquals(expected, remove(numbers, removeIndex));
     }
 }
