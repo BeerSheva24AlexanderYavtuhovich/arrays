@@ -87,7 +87,7 @@ public class ArraysTest {
     void binarySearchTest() {
         int[] array = { 153, -4, 6, 515, 3, 7, 10, 12, 789, 13, 14 };
         int[] array_1 = { 0, 10 };
-        int[] array_2 = { 1,2,7,3,5,4 };
+        int[] array_2 = { 1, 2, 7, 3, 5, 4 };
         sort(array);
         sort(array_1);
         sort(array_2);
@@ -116,9 +116,9 @@ public class ArraysTest {
     @Test
     void isOneSwapTest() {
         int[] arrOneSwap = { 0, 1, 2, 3, 5, 4, 8, 9, 10 };
-        int[] arrOneSwap_1 = { 10, 1, 2, 3, 4, 5, 8, 9, 0 };
-        int[] arrNotOneSwap_1 = { 0, 1 };
+        int[] arrOneSwap_1 = { 10, 2, 3, 4, 5, 8, 9, 1 };
         int[] arrNotOneSwap = { 0, 1, 2, 3, 5, 4, 8, 99, 10, 45 };
+        int[] arrNotOneSwap_1 = { 0, 1 };
 
         assertTrue(isOneSwap(arrOneSwap));
         assertTrue(isOneSwap(arrOneSwap_1));
