@@ -87,14 +87,14 @@ public class ArraysTest {
     void binarySearchTest() {
         int[] array = { 153, -4, 6, 515, 3, 7, 10, 12, 789, 13, 14 };
         int[] array_1 = { 0, 10 };
-        int[] array_2 = { 1 };
+        int[] array_2 = { 1,2,7,3,5,4 };
         sort(array);
         sort(array_1);
         sort(array_2);
         assertEquals(10, binarySearch(array, 789));
-        assertEquals(-1, binarySearch(array, 2));
+        assertEquals(0, binarySearch(array, 2));
         assertEquals(1, binarySearch(array_1, 10));
-        assertEquals(0, binarySearch(array_2, 1));
+        assertEquals(4, binarySearch(array_2, 6));
     }
 
     @Test

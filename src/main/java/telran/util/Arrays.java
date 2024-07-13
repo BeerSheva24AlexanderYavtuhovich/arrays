@@ -60,28 +60,29 @@ public class Arrays {
     public static int binarySearch(int[] ar, int key) {
         int left = 0;
         int right = ar.length - 1;
-        int res = -1;
+        int index = -1;
 
         while (left <= right) {
             int mid = (left + right) / 2;
             if (key == ar[mid]) {
-                res = mid;
+                index = mid;
                 break;
             }
             if (ar[mid] < key)
                 left = mid + 1;
             else
                 right = mid - 1;
-
         }
-        return res;
+
+        if (index < 0) {
+            index = left - 1;
+        }
+
+        return index;
     }
 
     public static int[] insertSorted(int[] arSorted, int number) {
-        int insertIndex = java.util.Arrays.binarySearch(arSorted, number);
-        if (insertIndex < 0) {
-            insertIndex = -(insertIndex + 1);
-        }
+        int insertIndex = binarySearch(arSorted, number) + 1;
         return insert(arSorted, insertIndex, number);
     }
 
