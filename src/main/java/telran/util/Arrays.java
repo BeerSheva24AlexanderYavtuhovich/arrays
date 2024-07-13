@@ -87,25 +87,31 @@ public class Arrays {
     }
 
     public static boolean isOneSwap(int[] array) {
-        int length = array.length;
-        boolean flSorted = false;
-        int counter = 0;
-        while (!flSorted) {
-            length--;
-            flSorted = true;
-            for (int i = 0; i < length; i++) {
-                if (array[i] > array[i + 1]) {
-                    counter++;
-                    flSorted = false;
-                    int tmp = array[i];
-                    array[i] = array[i + 1];
-                    array[i + 1] = tmp;
-                }
+        int firstIndex = 0, secondIndex = 0, counter = 0;
+        boolean res = true;
+        for (int i = 1; i < array.length - 1; i++) {
+            if (array[i] < array[i - 1]) {
+                if (firstIndex == 0)
+                    firstIndex = i;
+                else
+                    secondIndex = i;
+                counter++;
             }
-            if (counter > 1)
-                break;
         }
 
-        return counter == 1;
+        if (counter > 2 || counter == 0)
+            res = false;
+
+        else if (counter == 2)
+            swap(array, firstIndex - 1, secondIndex);
+
+        else if (counter == 1)
+            swap(array, firstIndex - 1, firstIndex);
+
+        for (int i = 1; i < array.length - 1; i++)
+            if (array[i] < array[i - 1])
+                res = false;
+
+        return res;
     }
 }

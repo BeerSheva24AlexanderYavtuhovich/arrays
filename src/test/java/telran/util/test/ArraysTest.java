@@ -116,10 +116,14 @@ public class ArraysTest {
     @Test
     void isOneSwapTest() {
         int[] arrOneSwap = { 0, 1, 2, 3, 5, 4, 8, 9, 10 };
+        int[] arrOneSwap_1 = { 10, 1, 2, 3, 4, 5, 8, 9, 0 };
+        int[] arrNotOneSwap_1 = { 0, 1 };
         int[] arrNotOneSwap = { 0, 1, 2, 3, 5, 4, 8, 99, 10, 45 };
 
         assertTrue(isOneSwap(arrOneSwap));
+        assertTrue(isOneSwap(arrOneSwap_1));
         assertFalse(isOneSwap(arrNotOneSwap));
+        assertFalse(isOneSwap(arrNotOneSwap_1));
     }
 
     private int[] getRandomArray(int nElements) {
