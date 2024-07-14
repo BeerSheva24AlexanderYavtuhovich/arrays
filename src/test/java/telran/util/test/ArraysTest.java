@@ -11,6 +11,8 @@ import org.junit.jupiter.api.Test;
 
 import static telran.util.Arrays.add;
 import static telran.util.Arrays.binarySearch;
+import static telran.util.Arrays.getIndexFromLeft;
+import static telran.util.Arrays.getIndexFromRight;
 import static telran.util.Arrays.insert;
 import static telran.util.Arrays.insertSorted;
 import static telran.util.Arrays.isOneSwap;
@@ -94,7 +96,7 @@ public class ArraysTest {
         assertEquals(10, binarySearch(array, 789));
         assertEquals(0, binarySearch(array, 2));
         assertEquals(1, binarySearch(array_1, 10));
-        assertEquals(4, binarySearch(array_2, 6));
+        assertEquals(-4, binarySearch(array_2, 6));
     }
 
     @Test
@@ -111,17 +113,30 @@ public class ArraysTest {
         int[] arrayExpected_3 = { -1, 0 };
         assertArrayEquals(arrayExpected_3, insertSorted(arraySorted_3, -1));
 
+        int[] ar = { 1, 2, 4, 5 };
+        int[] expected = { 0, 1, 2, 4, 5 };
+        assertArrayEquals(expected, insertSorted(ar, 0));
+
     }
 
     @Test
     void isOneSwapTest() {
         int[] arrOneSwap = { 0, 1, 2, 3, 5, 4, 8, 9, 10 };
+        assertEquals(5, getIndexFromRight(arrOneSwap));
+        assertEquals(4, getIndexFromLeft(arrOneSwap));
+        assertTrue(isOneSwap(arrOneSwap));
+
+
         int[] arrOneSwap_1 = { 10, 2, 3, 4, 5, 8, 9, 1 };
+        assertEquals(7, getIndexFromRight(arrOneSwap_1));
+        assertEquals(0, getIndexFromLeft(arrOneSwap_1));
+        assertTrue(isOneSwap(arrOneSwap_1));
+
+
         int[] arrNotOneSwap = { 0, 1, 2, 3, 5, 4, 8, 99, 10, 45 };
         int[] arrNotOneSwap_1 = { 0, 1 };
 
-        assertTrue(isOneSwap(arrOneSwap));
-        assertTrue(isOneSwap(arrOneSwap_1));
+
         assertFalse(isOneSwap(arrNotOneSwap));
         assertFalse(isOneSwap(arrNotOneSwap_1));
     }

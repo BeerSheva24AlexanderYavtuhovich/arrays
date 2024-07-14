@@ -75,47 +75,64 @@ public class Arrays {
         }
 
         if (index < 0) {
-            index = left - 1;
+            index = -(left - 1);
+
         }
 
         return index;
     }
 
     public static int[] insertSorted(int[] arSorted, int number) {
-        int insertIndex = binarySearch(arSorted, number) + 1;
+        int insertIndex = Math.abs((binarySearch(arSorted, number) - 1));
         return insert(arSorted, insertIndex, number);
     }
 
     public static boolean isOneSwap(int[] array) {
-        int indexFromRight = -1;
-        int indexFromLeft = -1;
+        int indexFromRight = getIndexFromRight(array);
+        int indexFromLeft = getIndexFromLeft(array);
         boolean res = true;
-
-        for (int i = array.length - 1; i >= 1; i--) {
-            if (array[i - 1] > array[i]) {
-                indexFromRight = i;
-                break;
-            }
-        }
-
-        for (int i = 0; i < array.length - 1; i++) {
-            if (array[i] > array[i + 1]) {
-                indexFromLeft = i;
-                break;
-            }
-        }
-
         if (indexFromLeft == indexFromRight || indexFromLeft == -1 || indexFromRight == -1) {
             res = false;
         } else {
             swap(array, indexFromLeft, indexFromRight);
-
-            for (int i = 0; i < array.length - 1; i++) {
-                if (array[i] > array[i + 1])
-                    res = false;
-            }
+            res = isSorted(array);
         }
 
+        return res;
+    }
+
+    public static boolean isSorted(int[] ar) {
+        boolean res = true;
+        int i = 0;
+        while ((i < ar.length - 1) && (res == true)) {
+            if (ar[i] > ar[i + 1])
+                res = false;
+            i++;
+        }
+        return res;
+    }
+
+    public static int getIndexFromRight(int[] ar) {
+        int res = -1;
+        int i = ar.length - 1;
+        while ((i >= 1) && (res == -1)) {
+            if (ar[i - 1] > ar[i]) {
+                res = i;
+            }
+            i--;
+        }
+        return res;
+    }
+
+    public static int getIndexFromLeft(int[] ar) {
+        int res = -1;
+        int i = 0;
+        while ((i < ar.length - 1) && (res == -1)) {
+            if (ar[i] > ar[i + 1]) {
+                res = i;
+            }
+            i++;
+        }
         return res;
     }
 }
