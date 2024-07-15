@@ -90,12 +90,10 @@ public class Arrays {
     public static boolean isOneSwap(int[] array) {
         int indexFromRight = getIndexFromRight(array);
         int indexFromLeft = getIndexFromLeft(array);
-        boolean res = true;
-        if (indexFromLeft == indexFromRight || indexFromLeft == -1 || indexFromRight == -1) {
-            res = false;
-        } else {
+        boolean res = false;
+        if (indexFromLeft != indexFromRight && indexFromLeft != -1 && indexFromRight != -1) {
             swap(array, indexFromLeft, indexFromRight);
-            res = isSorted(array);
+            res = isSorted(array);        
         }
 
         return res;
