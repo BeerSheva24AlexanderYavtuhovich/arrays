@@ -11,8 +11,6 @@ import org.junit.jupiter.api.Test;
 
 import static telran.util.Arrays.add;
 import static telran.util.Arrays.binarySearch;
-import static telran.util.Arrays.getIndexFromLeft;
-import static telran.util.Arrays.getIndexFromRight;
 import static telran.util.Arrays.insert;
 import static telran.util.Arrays.insertSorted;
 import static telran.util.Arrays.isOneSwap;
@@ -20,10 +18,21 @@ import static telran.util.Arrays.remove;
 import static telran.util.Arrays.search;
 import static telran.util.Arrays.sort;
 
+
+
 public class ArraysTest {
     private static final int N_ELEMENTS = 1000;
 
     int[] numbers = { 10, 7, 12, -4, 13, 3, 14 };
+
+    private int[] getRandomArray(int nElements) {
+        int[] res = new int[nElements];
+        Random random = new Random();
+        for (int i = 0; i < nElements; i++) {
+            res[i] = random.nextInt();
+        }
+        return res;
+    }
 
     @Test
     void searchTest() {
@@ -122,32 +131,28 @@ public class ArraysTest {
     @Test
     void isOneSwapTest() {
         int[] arrOneSwap = { 0, 1, 2, 3, 5, 4, 8, 9, 10 };
-        assertEquals(5, getIndexFromRight(arrOneSwap));
-        assertEquals(4, getIndexFromLeft(arrOneSwap));
         assertTrue(isOneSwap(arrOneSwap));
 
-
         int[] arrOneSwap_1 = { 10, 2, 3, 4, 5, 8, 9, 1 };
-        assertEquals(7, getIndexFromRight(arrOneSwap_1));
-        assertEquals(0, getIndexFromLeft(arrOneSwap_1));
         assertTrue(isOneSwap(arrOneSwap_1));
-
 
         int[] arrNotOneSwap = { 0, 1, 2, 3, 5, 4, 8, 99, 10, 45 };
         int[] arrNotOneSwap_1 = { 0, 1 };
-
 
         assertFalse(isOneSwap(arrNotOneSwap));
         assertFalse(isOneSwap(arrNotOneSwap_1));
     }
 
-    private int[] getRandomArray(int nElements) {
-        int[] res = new int[nElements];
-        Random random = new Random();
-        for (int i = 0; i < nElements; i++) {
-            res[i] = random.nextInt();
-        }
-        return res;
+    @Test
+    void sortAnyTypeTest() {
+        String[] strings = { "lmn", "cfta", "w", "aa" };
+        String[] expectedASCII = { "aa", "cfta", "lmn", "w" };
+        String[] expectedLength = { "w", "aa", "lmn", "cfta" };
+    
+        sort(strings, new ComparatorASCII());
+        assertArrayEquals(expectedASCII, strings);
+        sort(strings,new ComparatorLength());
+        assertArrayEquals(expectedLength, strings);
     }
 
 }

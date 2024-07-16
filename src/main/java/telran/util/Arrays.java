@@ -1,5 +1,7 @@
 package telran.util;
 
+import java.util.Comparator;
+
 public class Arrays {
     public static int search(int[] ar, int key) {
         int index = 0;
@@ -100,7 +102,7 @@ public class Arrays {
         return res;
     }
 
-    public static boolean isSorted(int[] ar) {
+    private static boolean isSorted(int[] ar) {
         boolean res = true;
         int i = 0;
         while ((i < ar.length - 1) && (res == true)) {
@@ -111,7 +113,7 @@ public class Arrays {
         return res;
     }
 
-    public static int getIndexFromRight(int[] ar) {
+    private static int getIndexFromRight(int[] ar) {
         int res = -1;
         int i = ar.length - 1;
         while ((i >= 1) && (res == -1)) {
@@ -123,7 +125,7 @@ public class Arrays {
         return res;
     }
 
-    public static int getIndexFromLeft(int[] ar) {
+    private static int getIndexFromLeft(int[] ar) {
         int res = -1;
         int i = 0;
         while ((i < ar.length - 1) && (res == -1)) {
@@ -133,5 +135,31 @@ public class Arrays {
             i++;
         }
         return res;
+    }
+
+    public static <T> void sort(T[] array, Comparator<T> comparator) {
+        int length = array.length;
+        boolean flSort = false;
+        do {
+            length--;
+            flSort = true;
+            for (int i = 0; i < length; i++) {
+                if (comparator.compare(array[i], array[i + 1]) > 0) {
+                    swap(array, i, i + 1);
+                    flSort = false;
+                }
+            }
+        } while (!flSort);
+    }
+
+    private static <T> void swap(T[] array, int i, int j) {
+        T tmp = array[i];
+        array[i] = array[j];
+        array[j] = tmp;
+    }
+
+    public static <T> int binarySearch(T[] array, T key, Comparator<T> comp){
+        //TODO
+        return -1;
     }
 }
