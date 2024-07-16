@@ -93,7 +93,8 @@ public class Arrays {
         boolean res = false;
         if (indexFromLeft != indexFromRight && indexFromLeft != -1 && indexFromRight != -1) {
             swap(array, indexFromLeft, indexFromRight);
-            res = isSorted(array);        
+            res = isSorted(array);
+            swap(array, indexFromRight, indexFromLeft);
         }
 
         return res;
