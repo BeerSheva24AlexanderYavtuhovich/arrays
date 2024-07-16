@@ -158,8 +158,18 @@ public class Arrays {
         array[j] = tmp;
     }
 
-    public static <T> int binarySearch(T[] array, T key, Comparator<T> comp){
-        //TODO
-        return -1;
+    public static <T> int binarySearch(T[] array, T key, Comparator<T> comp) {
+        int left = 0;
+        int right = array.length - 1;
+        int middle = (left + right) / 2;
+        while (left <= right && array[middle] != key) {
+            if (comp.compare(key, array[middle]) < 0) {
+                right = middle - 1;
+            } else {
+                left = middle + 1;
+            }
+            middle = (left + right) / 2;
+        }
+        return left > right ? -(left + 1) : middle;
     }
 }

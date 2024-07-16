@@ -18,8 +18,6 @@ import static telran.util.Arrays.remove;
 import static telran.util.Arrays.search;
 import static telran.util.Arrays.sort;
 
-
-
 public class ArraysTest {
     private static final int N_ELEMENTS = 1000;
 
@@ -148,11 +146,32 @@ public class ArraysTest {
         String[] strings = { "lmn", "cfta", "w", "aa" };
         String[] expectedASCII = { "aa", "cfta", "lmn", "w" };
         String[] expectedLength = { "w", "aa", "lmn", "cfta" };
-    
+
         sort(strings, new ComparatorASCII());
         assertArrayEquals(expectedASCII, strings);
-        sort(strings,new ComparatorLength());
+        sort(strings, new ComparatorLength());
         assertArrayEquals(expectedLength, strings);
     }
 
+    @Test
+    void binarySearchAnyTypeTest() {
+        String[] colors = { "red", "blue", "yellow", "green" };
+        String[] colorsAfterSorting = { "blue", "green", "red", "yellow" };
+        sort(colors, new ComparatorASCII());
+        assertArrayEquals(colors, colorsAfterSorting);
+        assertEquals(1, binarySearch(colors, "green", new ComparatorASCII()));
+        assertEquals(3, binarySearch(colors, "yellow", new ComparatorASCII()));
+        assertEquals(2, binarySearch(colors, "red", new ComparatorASCII()));
+        assertEquals(0, binarySearch(colors, "blue", new ComparatorASCII()));
+        assertEquals(-4, binarySearch(colors, "white", new ComparatorASCII()));
+
+        Integer[] numbers = { 9, 3, 5, 0, -2, -28 };
+        Integer[] numbersAfterSorting = { -28, -2, 0, 3, 5, 9 };
+        sort(numbers, new ComparatorIntegers());
+        assertArrayEquals(numbersAfterSorting, numbers);
+        assertEquals(0, binarySearch(numbers, -28, new ComparatorIntegers()));
+        assertEquals(2, binarySearch(numbers, 0, new ComparatorIntegers()));
+        assertEquals(5, binarySearch(numbers, 9, new ComparatorIntegers()));
+        assertEquals(-6, binarySearch(numbers, 6, new ComparatorIntegers()));
+    }
 }
