@@ -1,4 +1,4 @@
-## HW #5 and #6 Solution
+## HW #5,#6 and #7 Solution
 # testing
-<img width="230" alt="image" src="https://github.com/user-attachments/assets/a78bfbde-b4bf-4778-acc9-1797acd9d470">
+<img width="186" alt="image" src="https://github.com/user-attachments/assets/bfa5ee7f-42be-474e-97ee-8882dd522a58">
 
