@@ -173,5 +173,9 @@ public class ArraysTest {
         assertEquals(2, binarySearch(numbers, 0, new ComparatorIntegers()));
         assertEquals(5, binarySearch(numbers, 9, new ComparatorIntegers()));
         assertEquals(-6, binarySearch(numbers, 6, new ComparatorIntegers()));
+
+        assertEquals(1, binarySearch(colors, new String("green"), new ComparatorASCII()));
+        Integer[] numbers2 = { 1000, 2000 };
+        assertEquals(0, binarySearch(numbers2, 1000, new ComparatorIntegers()));
     }
 }
