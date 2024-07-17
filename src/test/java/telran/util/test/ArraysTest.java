@@ -1,5 +1,6 @@
 package telran.util.test;
 
+import java.util.Comparator;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -146,36 +147,39 @@ public class ArraysTest {
         String[] strings = { "lmn", "cfta", "w", "aa" };
         String[] expectedASCII = { "aa", "cfta", "lmn", "w" };
         String[] expectedLength = { "w", "aa", "lmn", "cfta" };
+        Comparator<String> compASCII = new ComparatorASCII();
 
-        sort(strings, new ComparatorASCII());
+        sort(strings, compASCII);
         assertArrayEquals(expectedASCII, strings);
-        sort(strings, new ComparatorLength());
+        sort(strings, compASCII);
         assertArrayEquals(expectedLength, strings);
     }
 
     @Test
     void binarySearchAnyTypeTest() {
+        Comparator<String> compASCII = new ComparatorASCII();
         String[] colors = { "red", "blue", "yellow", "green" };
         String[] colorsAfterSorting = { "blue", "green", "red", "yellow" };
         sort(colors, new ComparatorASCII());
         assertArrayEquals(colors, colorsAfterSorting);
-        assertEquals(1, binarySearch(colors, "green", new ComparatorASCII()));
-        assertEquals(3, binarySearch(colors, "yellow", new ComparatorASCII()));
-        assertEquals(2, binarySearch(colors, "red", new ComparatorASCII()));
-        assertEquals(0, binarySearch(colors, "blue", new ComparatorASCII()));
-        assertEquals(-4, binarySearch(colors, "white", new ComparatorASCII()));
+        assertEquals(1, binarySearch(colors, "green", compASCII));
+        assertEquals(3, binarySearch(colors, "yellow", compASCII));
+        assertEquals(2, binarySearch(colors, "red", compASCII));
+        assertEquals(0, binarySearch(colors, "blue", compASCII));
+        assertEquals(-4, binarySearch(colors, "white", compASCII));
+        assertEquals(1, binarySearch(colors, new String("green"), compASCII));
 
+        Comparator<Integer> compInteger = new ComparatorIntegers();
         Integer[] numbers = { 9, 3, 5, 0, -2, -28 };
         Integer[] numbersAfterSorting = { -28, -2, 0, 3, 5, 9 };
         sort(numbers, new ComparatorIntegers());
         assertArrayEquals(numbersAfterSorting, numbers);
-        assertEquals(0, binarySearch(numbers, -28, new ComparatorIntegers()));
-        assertEquals(2, binarySearch(numbers, 0, new ComparatorIntegers()));
-        assertEquals(5, binarySearch(numbers, 9, new ComparatorIntegers()));
-        assertEquals(-6, binarySearch(numbers, 6, new ComparatorIntegers()));
+        assertEquals(0, binarySearch(numbers, -28, compInteger));
+        assertEquals(2, binarySearch(numbers, 0, compInteger));
+        assertEquals(5, binarySearch(numbers, 9, compInteger));
+        assertEquals(-6, binarySearch(numbers, 6, compInteger));
 
-        assertEquals(1, binarySearch(colors, new String("green"), new ComparatorASCII()));
         Integer[] numbers2 = { 1000, 2000 };
-        assertEquals(0, binarySearch(numbers2, 1000, new ComparatorIntegers()));
+        assertEquals(0, binarySearch(numbers2, 1000, compInteger));
     }
 }
