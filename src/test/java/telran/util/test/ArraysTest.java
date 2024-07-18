@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import static telran.util.Arrays.add;
 import static telran.util.Arrays.binarySearch;
+import static telran.util.Arrays.find;
 import static telran.util.Arrays.insert;
 import static telran.util.Arrays.insertSorted;
 import static telran.util.Arrays.isOneSwap;
@@ -148,10 +149,11 @@ public class ArraysTest {
         String[] expectedASCII = { "aa", "cfta", "lmn", "w" };
         String[] expectedLength = { "w", "aa", "lmn", "cfta" };
         Comparator<String> compASCII = new ComparatorASCII();
+        Comparator<String> compLength = new ComparatorLength();
 
         sort(strings, compASCII);
         assertArrayEquals(expectedASCII, strings);
-        sort(strings, compASCII);
+        sort(strings, compLength);
         assertArrayEquals(expectedLength, strings);
     }
 
@@ -181,5 +183,36 @@ public class ArraysTest {
 
         Integer[] numbers2 = { 1000, 2000 };
         assertEquals(0, binarySearch(numbers2, 1000, compInteger));
+    }
+
+    @Test
+    void binarySearchNoComparator() {
+        String[] strings = { "aa", "cfta", "lmn", "w" };
+        Person prs1 = new Person(10, "Vasya");
+        Person prs2 = new Person(20, "Itay");
+        Person prs3 = new Person(30, "Sara");
+        Person[] persons = {
+                prs1, prs2, prs3
+        };
+        assertEquals(1, binarySearch(strings, "cfta"));
+        assertEquals(0, binarySearch(persons, prs1));
+        assertEquals(1, binarySearch(persons, prs2));
+        assertEquals(1, binarySearch(persons, new Person(5,"Serg")));
+    }
+
+    @Test
+    void evenOddSorting() {
+        Integer[] array = {7,-8,10,-100, 13, -10, 99 };
+        Integer[] expected = {-100, -10, -8, 10, 99, 13, 7}; //even in asc, odd in desc
+        sort(array, new EvenOddComparator());
+        assertArrayEquals(expected, array);
+    }
+
+
+    @Test
+    void findTest(){
+        Integer[] array = {7,-8,10,-100, 13, -10, 99 };
+        Integer[] expected = {7,13,99};
+        assertArrayEquals(expected, find(array, new OddNumbersPredicate()));
     }
 }
