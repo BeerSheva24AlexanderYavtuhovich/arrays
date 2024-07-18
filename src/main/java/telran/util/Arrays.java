@@ -162,8 +162,9 @@ public class Arrays {
         int left = 0;
         int right = array.length - 1;
         int middle = (left + right) / 2;
-        while (left <= right && comp.compare(key, array[middle]) != 0) {
-            if (comp.compare(key, array[middle]) < 0) {
+        int compareResult = 0;
+        while (left <= right && (compareResult = comp.compare(key, array[middle])) != 0) {
+            if (compareResult < 0) {
                 right = middle - 1;
             } else {
                 left = middle + 1;
