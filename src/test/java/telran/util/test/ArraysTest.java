@@ -2,6 +2,7 @@ package telran.util.test;
 
 import java.util.Comparator;
 import java.util.Random;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,6 +18,7 @@ import static telran.util.Arrays.insert;
 import static telran.util.Arrays.insertSorted;
 import static telran.util.Arrays.isOneSwap;
 import static telran.util.Arrays.remove;
+import static telran.util.Arrays.removeIf;
 import static telran.util.Arrays.search;
 import static telran.util.Arrays.sort;
 
@@ -197,22 +199,41 @@ public class ArraysTest {
         assertEquals(1, binarySearch(strings, "cfta"));
         assertEquals(0, binarySearch(persons, prs1));
         assertEquals(1, binarySearch(persons, prs2));
-        assertEquals(1, binarySearch(persons, new Person(5,"Serg")));
+        assertEquals(-1, binarySearch(persons, new Person(5, "Serg")));
     }
 
     @Test
     void evenOddSorting() {
-        Integer[] array = {7,-8,10,-100, 13, -10, 99 };
-        Integer[] expected = {-100, -10, -8, 10, 99, 13, 7}; //even in asc, odd in desc
+        Integer[] array = { 7, -8, 10, -100, 13, -10, 99 };
+        Integer[] expected = { -100, -10, -8, 10, 99, 13, 7 }; // even in asc, odd in desc
         sort(array, new EvenOddComparator());
         assertArrayEquals(expected, array);
     }
 
+    @Test
+    void findTest() {
+        Predicate<Integer> OddNumbersPredicate = new OddNumbersPredicate();
+
+        Integer[] array = { 7, -8, 10, -100, 13, -10, 99 };
+        Integer[] expected = { 7, 13, 99 };
+        assertArrayEquals(expected, find(array, OddNumbersPredicate));
+
+        Integer[] array2 = { -1000, -2000, 0, 999, 85, 12, -34, 2500 };
+        Integer[] expected2 = { 999, 85 };
+        assertArrayEquals(expected2, find(array2, OddNumbersPredicate));
+    }
 
     @Test
-    void findTest(){
-        Integer[] array = {7,-8,10,-100, 13, -10, 99 };
-        Integer[] expected = {7,13,99};
-        assertArrayEquals(expected, find(array, new OddNumbersPredicate()));
+    void removeIfTest() {
+        Predicate<Integer> OddNumbersPredicate = new OddNumbersPredicate();
+
+        Integer[] array = { 7, -8, 10, -100, 13, -10, 99 };
+        Integer[] expected = { -8, 10, -100, -10 };
+        assertArrayEquals(expected, removeIf(array, OddNumbersPredicate));
+
+        Integer[] array2 = { 20, 4000, 0, -13, 168, 1, -1, 7, 3, 1000, 29 };
+        Integer[] expected2 = { 20, 4000, 0, 168, 1000 };
+        assertArrayEquals(expected2, removeIf(array2, OddNumbersPredicate));
     }
+
 }

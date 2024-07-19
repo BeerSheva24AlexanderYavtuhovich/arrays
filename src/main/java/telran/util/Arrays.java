@@ -175,10 +175,8 @@ public class Arrays {
         return left > right ? -(left + 1) : middle;
     }
 
-    public static <T> int binarySearch(T[] array, T key) {
-        // TODO
-        // based on the binarySearch, but
-        return -1;
+    public static <T extends Comparable<? super T>> int binarySearch(T[] array, T key) {
+        return binarySearch(array, key, Comparator.naturalOrder());
     }
 
     public static <T> T[] insert(T[] array, int index, T item) {
@@ -188,19 +186,17 @@ public class Arrays {
         return res;
     }
 
-    public static <T> T[] find (T[]array, Predicate<T> predicate){
+    public static <T> T[] find(T[] array, Predicate<T> predicate) {
         T[] result = java.util.Arrays.copyOf(array, 0);
-        for (int i = 0; i < array.length; i++){
-            if (predicate.test(array[i])){
+        for (int i = 0; i < array.length; i++) {
+            if (predicate.test(array[i])) {
                 result = insert(result, result.length, array[i]);
             }
         }
-        return result;        
+        return result;
     }
 
-    public static <T> T removeIf (T[] array, Predicate<T> predicate){
-    //TODO
-    //one code line
-    return null;
-}
+    public static <T> T[] removeIf(T[] array, Predicate<T> predicate) {
+        return find(array, predicate.negate());
+    }
 }
