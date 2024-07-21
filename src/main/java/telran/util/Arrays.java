@@ -175,8 +175,9 @@ public class Arrays {
         return left > right ? -(left + 1) : middle;
     }
 
+    @SuppressWarnings("rawtypes")
     public static <T> int binarySearch(T[] array, T key) {
-        return java.util.Arrays.asList(array).indexOf(key);
+        return binarySearch(array, key, Comparator.comparing(x -> (Comparable) x));
     }
 
     public static <T> T[] insert(T[] array, int index, T item) {
