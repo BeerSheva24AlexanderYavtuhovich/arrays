@@ -189,9 +189,9 @@ public class Arrays {
 
     public static <T> T[] find(T[] array, Predicate<T> predicate) {
         T[] result = java.util.Arrays.copyOf(array, 0);
-        for (int i = 0; i < array.length; i++) {
-            if (predicate.test(array[i])) {
-                result = insert(result, result.length, array[i]);
+        for (T array1 : array) {
+            if (predicate.test(array1)) {
+                result = insert(result, result.length, array1);
             }
         }
         return result;
@@ -200,4 +200,29 @@ public class Arrays {
     public static <T> T[] removeIf(T[] array, Predicate<T> predicate) {
         return find(array, predicate.negate());
     }
+
+    public static String matchesRules(char[] chars, CharacterRule[] mustBeRules, CharacterRule[] mustNotBeRules) {
+        StringBuilder errorMessage = new StringBuilder();
+        appendMessages(errorMessage, chars, mustBeRules);
+        appendMessages(errorMessage, chars, mustNotBeRules);
+        return errorMessage.toString().trim();
+
+    }
+
+    private static void appendMessages(StringBuilder errorMessage, char[] chars, CharacterRule[] rules) {
+        for (CharacterRule rule : rules) {
+            if (!checkRule(chars, rule)) {
+                errorMessage.append(rule.getErrorMessage()).append(" ");
+            }
+        }
+    }
+
+    private static boolean checkRule(char[] chars, CharacterRule rule) {
+        int i = 0;
+        while (i < chars.length && !rule.matches(chars[i])) {
+            i++;
+        }
+        return i < chars.length ? rule.getFlag() : !rule.getFlag();
+    }
+
 }

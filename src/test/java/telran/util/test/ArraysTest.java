@@ -17,10 +17,12 @@ import static telran.util.Arrays.find;
 import static telran.util.Arrays.insert;
 import static telran.util.Arrays.insertSorted;
 import static telran.util.Arrays.isOneSwap;
+import static telran.util.Arrays.matchesRules;
 import static telran.util.Arrays.remove;
 import static telran.util.Arrays.removeIf;
 import static telran.util.Arrays.search;
 import static telran.util.Arrays.sort;
+import telran.util.CharacterRule;
 
 public class ArraysTest {
     private static final int N_ELEMENTS = 1000;
@@ -150,21 +152,19 @@ public class ArraysTest {
         String[] strings = { "lmn", "cfta", "w", "aa" };
         String[] expectedASCII = { "aa", "cfta", "lmn", "w" };
         String[] expectedLength = { "w", "aa", "lmn", "cfta" };
-        Comparator<String> compASCII = new ComparatorASCII();
-        Comparator<String> compLength = new ComparatorLength();
 
-        sort(strings, compASCII);
+        sort(strings, (a, b) -> a.compareTo(b));
         assertArrayEquals(expectedASCII, strings);
-        sort(strings, compLength);
+        sort(strings, (a, b) -> Integer.compare(a.length(), b.length()));
         assertArrayEquals(expectedLength, strings);
     }
 
     @Test
     void binarySearchAnyTypeTest() {
-        Comparator<String> compASCII = new ComparatorASCII();
+        Comparator<String> compASCII = (a, b) -> a.compareTo(b);
         String[] colors = { "red", "blue", "yellow", "green" };
         String[] colorsAfterSorting = { "blue", "green", "red", "yellow" };
-        sort(colors, new ComparatorASCII());
+        sort(colors, compASCII);
         assertArrayEquals(colors, colorsAfterSorting);
         assertEquals(1, binarySearch(colors, "green", compASCII));
         assertEquals(3, binarySearch(colors, "yellow", compASCII));
@@ -173,10 +173,10 @@ public class ArraysTest {
         assertEquals(-4, binarySearch(colors, "white", compASCII));
         assertEquals(1, binarySearch(colors, new String("green"), compASCII));
 
-        Comparator<Integer> compInteger = new ComparatorIntegers();
+        Comparator<Integer> compInteger = Integer::compare;
         Integer[] numbers = { 9, 3, 5, 0, -2, -28 };
         Integer[] numbersAfterSorting = { -28, -2, 0, 3, 5, 9 };
-        sort(numbers, new ComparatorIntegers());
+        sort(numbers, compInteger);
         assertArrayEquals(numbersAfterSorting, numbers);
         assertEquals(0, binarySearch(numbers, -28, compInteger));
         assertEquals(2, binarySearch(numbers, 0, compInteger));
@@ -205,27 +205,29 @@ public class ArraysTest {
     @Test
     void evenOddSorting() {
         Integer[] array = { 7, -8, 10, -100, 13, -10, 99 };
-        Integer[] expected = { -100, -10, -8, 10, 99, 13, 7 }; // even in asc, odd in desc
-        sort(array, new EvenOddComparator());
+        Integer[] expected = { -100, -10, -8, 10, 99, 13, 7 };
+        sort(array, (a, b) -> {
+            boolean o1Even = a % 2 == 0;
+            boolean o2Even = b % 2 == 0;
+            return o1Even ? (o2Even ? a.compareTo(b) : -1) : (o2Even ? 1 : b.compareTo(a));
+        });
         assertArrayEquals(expected, array);
     }
 
     @Test
     void findTest() {
-        Predicate<Integer> OddNumbersPredicate = new OddNumbersPredicate();
-
         Integer[] array = { 7, -8, 10, -100, 13, -10, 99 };
         Integer[] expected = { 7, 13, 99 };
-        assertArrayEquals(expected, find(array, OddNumbersPredicate));
+        assertArrayEquals(expected, find(array, n -> n % 2 != 0));
 
         Integer[] array2 = { -1000, -2000, 0, 999, 85, 12, -34, 2500 };
         Integer[] expected2 = { 999, 85 };
-        assertArrayEquals(expected2, find(array2, OddNumbersPredicate));
+        assertArrayEquals(expected2, find(array2, n -> n % 2 != 0));
     }
 
     @Test
     void removeIfTest() {
-        Predicate<Integer> OddNumbersPredicate = new OddNumbersPredicate();
+        Predicate<Integer> OddNumbersPredicate = n -> n % 2 != 0;
 
         Integer[] array = { 7, -8, 10, -100, 13, -10, 99 };
         Integer[] expected = { -8, 10, -100, -10 };
@@ -234,6 +236,46 @@ public class ArraysTest {
         Integer[] array2 = { 20, 4000, 0, -13, 168, 1, -1, 7, 3, 1000, 29 };
         Integer[] expected2 = { 20, 4000, 0, 168, 1000 };
         assertArrayEquals(expected2, removeIf(array2, OddNumbersPredicate));
+    }
+
+    @Test
+    void matchRulesTest() {
+
+        CharacterRule[] mustBeRules = {
+                new CharacterRule(true, ch -> Character.isUpperCase(ch), "no_capital"),
+                new CharacterRule(true, ch -> Character.isLowerCase(ch), "no_lower"),
+                new CharacterRule(true, ch -> Character.isDigit(ch), "no_digit"),
+                new CharacterRule(true, ch -> ch == '.', "no_dot")
+        };
+
+        CharacterRule[] mustNotBeRules = {
+                new CharacterRule(false, ch -> Character.isSpaceChar(ch),
+                        "space_disallowed")
+        };
+
+        char[] matches = { 'a', 'n', '*', 'G', '.', '.', '1' };
+        String expectedMatches = matchesRules(matches, mustBeRules, mustNotBeRules);
+        assertEquals("", expectedMatches);
+
+        char[] mismatches = { 'a', 'n', '*', 'G', '.', '.', '1', ' ' };
+        String expectedMismatches = matchesRules(mismatches, mustBeRules, mustNotBeRules);
+        assertEquals("space_disallowed", expectedMismatches);
+
+        char[] noCapital = { 'a', 'n', '*', '1', '.' };
+        String expectedNocapital = matchesRules(noCapital, mustBeRules, mustNotBeRules);
+        assertEquals("no_capital", expectedNocapital);
+
+        char[] noDigit = { 'a', 'n', '*', 'G', '.', '.' };
+        String expectedNoDigit = matchesRules(noDigit, mustBeRules, mustNotBeRules);
+        assertEquals("no_digit", expectedNoDigit);
+
+        char[] noDot = { 'a', 'n', '*', 'G', '1' };
+        String expectedNoDot = matchesRules(noDot, mustBeRules, mustNotBeRules);
+        assertEquals("no_dot", expectedNoDot);
+
+        char[] manyErrors = { 'a', 'n', '*' };
+        String expectedManyErrors = matchesRules(manyErrors, mustBeRules, mustNotBeRules);
+        assertEquals("no_capital no_digit no_dot", expectedManyErrors);
     }
 
 }
