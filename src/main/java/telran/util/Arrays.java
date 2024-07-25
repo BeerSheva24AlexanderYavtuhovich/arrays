@@ -222,7 +222,7 @@ public class Arrays {
         while (i < chars.length && !rule.matches(chars[i])) {
             i++;
         }
-        return i < chars.length ? rule.getFlag() : !rule.getFlag();
+        return (i < chars.length) == rule.getFlag();
     }
 
 }

@@ -29,10 +29,10 @@ public class ArraysTest {
 
     int[] numbers = { 10, 7, 12, -4, 13, 3, 14 };
 
-    private int[] getRandomArray(int nElements) {
-        int[] res = new int[nElements];
+    private int[] getRandomArray() {
+        int[] res = new int[ArraysTest.N_ELEMENTS];
         Random random = new Random();
-        for (int i = 0; i < nElements; i++) {
+        for (int i = 0; i < ArraysTest.N_ELEMENTS; i++) {
             res[i] = random.nextInt();
         }
         return res;
@@ -90,7 +90,7 @@ public class ArraysTest {
 
     @Test
     void sortTestRandomArray() {
-        int[] array = getRandomArray(N_ELEMENTS);
+        int[] array = getRandomArray();
         int limit = array.length - 1;
         sort(array);
         for (int i = 0; i < limit; i++) {
@@ -153,7 +153,7 @@ public class ArraysTest {
         String[] expectedASCII = { "aa", "cfta", "lmn", "w" };
         String[] expectedLength = { "w", "aa", "lmn", "cfta" };
 
-        sort(strings, (a, b) -> a.compareTo(b));
+        sort(strings, String::compareTo);
         assertArrayEquals(expectedASCII, strings);
         sort(strings, (a, b) -> Integer.compare(a.length(), b.length()));
         assertArrayEquals(expectedLength, strings);
@@ -161,7 +161,7 @@ public class ArraysTest {
 
     @Test
     void binarySearchAnyTypeTest() {
-        Comparator<String> compASCII = (a, b) -> a.compareTo(b);
+        Comparator<String> compASCII = String::compareTo;
         String[] colors = { "red", "blue", "yellow", "green" };
         String[] colorsAfterSorting = { "blue", "green", "red", "yellow" };
         sort(colors, compASCII);
@@ -242,14 +242,14 @@ public class ArraysTest {
     void matchRulesTest() {
 
         CharacterRule[] mustBeRules = {
-                new CharacterRule(true, ch -> Character.isUpperCase(ch), "no_capital"),
-                new CharacterRule(true, ch -> Character.isLowerCase(ch), "no_lower"),
-                new CharacterRule(true, ch -> Character.isDigit(ch), "no_digit"),
+                new CharacterRule(true, Character::isUpperCase, "no_capital"),
+                new CharacterRule(true, Character::isLowerCase, "no_lower"),
+                new CharacterRule(true, Character::isDigit, "no_digit"),
                 new CharacterRule(true, ch -> ch == '.', "no_dot")
         };
 
         CharacterRule[] mustNotBeRules = {
-                new CharacterRule(false, ch -> Character.isSpaceChar(ch),
+                new CharacterRule(false, Character::isSpaceChar,
                         "space_disallowed")
         };
 
